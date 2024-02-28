@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    container_name: myBlog
+    build:  ./
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysqlBlog
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules   
+    restart: always
+  mysqlBlog:
+    container_name: myBlog_mysql
+    build: ./dockerfiles/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: blog
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./schemas.sql:/docker-entrypoint-initdb.d/init-db.sql
+volumes:
+    mysqldata:
+        driver: "local"

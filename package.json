@@ -1,0 +1,17 @@
+{
+  "name": "lab06",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "author": "Ruth de Leon",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.9.2"
+  }
+}
