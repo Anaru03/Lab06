@@ -29,9 +29,12 @@ nav {
 .post-container {
     border-right: 2px solid #000000; 
     padding-right: 10px; 
-    font-size: 18px;
+    
 }
 
+h2 {
+    font-size: 30px;
+}
 
 h2, h3, h4 {
     margin-top: 0; 

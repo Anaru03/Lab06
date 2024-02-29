@@ -108,7 +108,15 @@ app.get('/', (req, res) => {
 });
   
 app.get('/html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'html.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html', 'autores.html'));
+});
+
+app.get('/html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'crearpost.html'));
+});
+
+app.get('/html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'multimedia.html'));
 });
   
 app.get('/styles.css', (req, res) => {

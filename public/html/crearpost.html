@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Post</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <h2>Crea un nuevo post</h2>
+
+    <div class="container">
+        <main>
+            <div class="post-container">
+                <article>
+                    <form action="/my-handling-form-page" method="post">
+                        <ul>
+                          <li>
+                            <label for="name">Nombre del autor:</label>
+                            <input type="text" id="author" name="user_name" />
+                          </li>
+                          <br>
+                          <li>
+                            <label for="name">Titulo:</label>
+                            <input type="text" id="tittle" name="user_name" />
+                          </li>
+                          <br>
+                          <li>
+                            <label for="mail">Imagen:</label>
+                            <input type="email" id="image" name="user_mail" />
+                          </li>
+                          <br>
+                          <li>
+                            <label for="msg">Escribe aquí tu contenido:</label>
+                            <textarea id="msg" name="content_info"></textarea>
+                          </li>
+                        </ul>
+
+                        <button type="enviar", id="boton_enviar">¡Publicar post!</button>                       
+                      </form>  
+                      <br>
+                      <button class="fecha-hora" onclick="fecha_hora()">Fecha y hora</button>
+                </article>
+            </div>
+        </main>
+    </div>
+
+
+</body>
+</html>
