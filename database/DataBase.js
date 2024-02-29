@@ -1,5 +1,3 @@
-//DataBase.js
-
 import conn from './conn.js';
 
 export const db = {
@@ -13,17 +11,27 @@ export const db = {
   }
 };
 
-export async function getAllPosts() {
+export async function getPosts() {
+  const [rows] = await conn.query('select * from post_content');
+  return rows
 }
 
-export async function getPostById(postId) {
+export async function createPost(title, content, author_name, images_content) {
+  const [result] = await conn.query('insert into post_content (title, content, author_name, images_content) values (?, ?, ?, ?)', [title, content, author_name])
+  return result
 }
 
-export async function createPost(newPost) {
+export async function getPostId(id) {
+  const [rows] = await conn.query('select * from post_content where id = ?', [id]);
+  return rows
 }
 
-export async function updatePost(postId, updatedPostData) {
+export async function updatePost(id, title, content, author_name, images_content) {
+  const [result] = await conn.query('update post_content set title = ?, content = ?, author_name = ?, images_content = ? where id = ?', [title, content, author_name, images_content, id])
+  return result  
 }
 
-export async function deletePost(postId) {
+export async function deletePost(id) {
+  const [result] = await conn.query('delete from post_content where id = ?', [id])
+  return result
 }

@@ -1,4 +1,4 @@
-create table IF not exists blog_post (  ---cambiar el nombre
+create table IF not exists Post_Content ( 
     id int AUTO_INCREMENT primary key,
     title varchar(225) not null,
     content text not null,
