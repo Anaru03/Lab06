@@ -10,7 +10,7 @@ Este proyecto tiene como objetivo prácticar conceptos básicos de JavaScript de
 - Construir y probar sus propios endpoints REST.
 - Crear código limpio y ordenado en JavaScript.
 
-##Requerimientos
+## Requerimientos
 
 - Se debe detener instalado en el sistema el programa Docker.
 
