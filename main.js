@@ -3,8 +3,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { db } from './database/DataBase.js';
-import { getAllPosts, getPostById, createPost, updatePost, deletePost } from './database/DataBase.js';
+import { getPosts, getPostId, createPost, updatePost, deletePost } from './database/DataBase.js';
 import cors from 'cors';
 
 
@@ -42,8 +41,9 @@ app.use(express.static(path.join(__dirname, 'public')));
   });
 
 app.get('/posts', async (req, res, next) => {
+    console.log(getPosts())
     try {
-        const posts = await getAllPosts();
+        const posts = await getPosts();
         res.json(posts);
     } catch (error) {
         next(error); 
@@ -53,11 +53,11 @@ app.get('/posts', async (req, res, next) => {
 app.get('/posts/:postId', async (req, res, next) => {
     try {
         const postId = req.params.postId;
-        const post = await getPostById(postId);
+        const post = await getPostId(postId);
         if (post) {
             res.json(post);
         } else {
-            res.status(404).json({ error: 'Error: Post not found' });
+            res.status(404).json({ error: '404 Not Found' });
         }
     } catch (error) {
         next(error);
@@ -82,7 +82,7 @@ app.put('/posts/:postId', async (req, res, next) => {
         if (updatedPost) {
             res.json(updatedPost);
         } else {
-            res.status(404).json({ error: 'Post not found' });
+            res.status(404).json({ error: '404 Not Found' });
         }
     } catch (error) {
         next(error);
@@ -96,7 +96,7 @@ app.delete('/posts/:postId', async (req, res, next) => {
         if (deletedPost) {
             res.json({ message: 'Post deleted successfully' });
         } else {
-            res.status(404).json({ error: 'Post not found' });
+            res.status(404).json({ error: '404 Not Found'});
         }
     } catch (error) {
         next(error);

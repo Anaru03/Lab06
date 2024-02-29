@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+}
+
+body {
+    margin: 15px;
+    padding: 0;
+    background-color: #f0f0f0; 
+}
+
+button.fecha-hora {
+    margin-left: auto; /* Establece un margen izquierdo automático para alinear el botón a la derecha */
+}
+
+
+
+main {
+    flex: 1; 
+    padding: 20px; 
+}
+
+nav {
+    flex: 0 0 23%; 
+    background-color: #ad8787;  
+    padding: 20px;
+    color: #000000; 
+}
+
+.post-container {
+    border-right: 2px solid #000000; /* Línea divisoria entre el índice y el contenido */
+    padding-right: 10px; /* Espaciado a la derecha de los artículos */
+}
+
+h2, h3, h4 {
+    margin-top: 0; /* Eliminar el margen superior predeterminado de los encabezados */
+}
