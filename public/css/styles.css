@@ -9,7 +9,7 @@ body {
 }
 
 button.fecha-hora {
-    margin-left: auto; /* Establece un margen izquierdo automático para alinear el botón a la derecha */
+    margin-left: auto; 
 }
 
 
@@ -27,10 +27,12 @@ nav {
 }
 
 .post-container {
-    border-right: 2px solid #000000; /* Línea divisoria entre el índice y el contenido */
-    padding-right: 10px; /* Espaciado a la derecha de los artículos */
+    border-right: 2px solid #000000; 
+    padding-right: 10px; 
+    font-size: 18px;
 }
 
+
 h2, h3, h4 {
-    margin-top: 0; /* Eliminar el margen superior predeterminado de los encabezados */
+    margin-top: 0; 
 }

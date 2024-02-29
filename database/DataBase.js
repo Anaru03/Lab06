@@ -35,3 +35,23 @@ export async function deletePost(id) {
   const [result] = await conn.query('delete from post_content where id = ?', [id])
   return result
 }
+
+export async function insertImage(images_content) {
+  const [result] = await conn.query('INSERT INTO post_content (images_content) VALUES (?)', [images_content]);
+  return result;
+}
+
+/**
+const imageUrl = 'https://lukascondie.files.wordpress.com/2015/01/slytherin_wallpaper_by_dragonlover28-d45jhse.jpg?w=640';
+const imagePath = './slytherin_wallpaper.jpg';
+
+downloadImage(imageUrl, imagePath)
+  .then((imagePath) => {
+    console.log('Imagen descargada correctamente en:', imagePath);
+    // Aquí puedes continuar con el procesamiento de la imagen
+  })
+  .catch((err) => {
+    console.error('Error al descargar la imagen:', err);
+  });
+
+   */
