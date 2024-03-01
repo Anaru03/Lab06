@@ -8,7 +8,7 @@ import cors from 'cors';
 
 
 const app = express();
-const PORT = 22428;
+const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
