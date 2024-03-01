@@ -19,7 +19,7 @@ services:
       MYSQL_DATABASE: blog
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3308:3306"
+      - "3309:3306"
     volumes:
       - ./schema.sql:/docker-entrypoint-initdb.d/init-db.sql
 volumes:
