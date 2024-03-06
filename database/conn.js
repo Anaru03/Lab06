@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
-    hsot: "mysqlblog",
+    host: 'mysqlblog',
     port: 3306,
     user: 'root',
     database: 'blog',
