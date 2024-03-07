@@ -1,16 +1,5 @@
 import conn from './conn.js';
 
-export const db = {
-  async query(sql, args) {
-    try {
-      const [rows] = await conn.query(sql, args);
-      return rows;
-    } catch (error) {
-      throw new Error(`Error executing query: ${error}`);
-    }
-  }
-};
-
 export async function getPosts() {
   const [rows] = await conn.query('select * from Post_content');
   return rows
