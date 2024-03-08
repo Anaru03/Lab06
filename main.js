@@ -12,6 +12,7 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
+app.use(cors());
 app.use(express.json());
 
 const swaggerOptions = {
@@ -24,21 +25,20 @@ const swaggerOptions = {
       },
       servers: [{ url: 'http://localhost:3000' }],
     },
-    apis: ['main.js'],
+    apis: ['./database/DataBase.js'],
   };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec)
-);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
-app.use(cors());
 
-app.use(express.static(path.join(__dirname, 'public')));
-
-  app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Error interno del servidor');
   });
+
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/posts', async (req, res, next) => {
     console.log(getPosts())
@@ -101,30 +101,6 @@ app.delete('/posts/:postId', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-  
-app.get('/html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'autores.html'));
-});
-
-app.get('/html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'crearpost.html'));
-});
-
-app.get('/html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'multimedia.html'));
-});
-  
-app.get('/styles.css', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'css', 'styles.css'));
-});
-  
-app.get('/script.js', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'js', 'script.js'));
 });
 
 app.listen(PORT, () => {
