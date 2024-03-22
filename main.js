@@ -1,10 +1,10 @@
-import express from 'express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUI from 'swagger-ui-express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { getPosts, getPostId, createPost, updatePost, deletePost } from './database/DataBase.js';
-import cors from 'cors';
+import express from 'express'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUI from 'swagger-ui-express'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { getPosts, getPostId, createPost, updatePost, deletePost } from './database/DataBase.js'
+import cors from 'cors'
 
 
 const app = express();
@@ -35,10 +35,20 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Error interno del servidor');
-  });
+  })
+
+app.get('/', (req, res) => {
+    res.sendFile(join(myDirname, 'public', 'index.html'), (err) => {
+        if (err) {
+        res.status(500).send('Error serving index.html')
+    }
+    })
+  })
+
 
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/posts', async (req, res, next) => {
     console.log(getPosts())
@@ -49,6 +59,7 @@ app.get('/posts', async (req, res, next) => {
         next(error); 
     }
 });
+
 
 app.get('/posts/:postId', async (req, res, next) => {
     try {
@@ -66,9 +77,10 @@ app.get('/posts/:postId', async (req, res, next) => {
 
 app.post('/posts', async (req, res, next) => {
     try {
-        const newPost = req.body;
-        const createPost = await createPost(newPost);
-        res.status(200).json(createPost);
+        const { ...post} = req.body; 
+
+        const createPostResult = await createPost(post.title, post.content, post.images_content, post.author_name); 
+        res.status(201).json(createPostResult);
     } catch (error) {
         next(error);
     }
@@ -104,5 +116,5 @@ app.delete('/posts/:postId', async (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://127.0.0.1:${PORT}/`);
+    console.log(`Servidor corriendo en http://127.0.0.1:${PORT}`);
 });

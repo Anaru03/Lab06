@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('formulario_NewPost')
+  const form = document.getElementById('formulario_NewPost')
   
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
   
       const title = document.getElementById('title').value
-      const images_content = document.getElementById('image').value
       const content = document.getElementById('content_info').value
+      const images_content = document.getElementById('image').value
       const author_name = document.getElementById('author').value
 
       const post = {
         title, content, images_content, author_name,
       }
-  
+
       try {
         const response = await fetch('http://127.0.0.1:3000/posts', {
           method: 'POST',
@@ -34,8 +34,3 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   })
-
-
-
-
-
