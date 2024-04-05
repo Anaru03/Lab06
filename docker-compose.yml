@@ -10,11 +10,9 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    restart: always
   mysqlblog:
     container_name: myBlog_mysql
     build: ./dockerfiles/mysql
-    restart: always
     environment:
       MYSQL_DATABASE: blog
       MYSQL_ROOT_PASSWORD: root
