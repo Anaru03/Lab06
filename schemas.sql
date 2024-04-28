@@ -6,3 +6,10 @@ CREATE TABLE IF NOT EXISTS Post_Content (
     images_content VARCHAR(225),
     author_name VARCHAR(225) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(225) NOT NULL,
+    password VARCHAR(225) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
