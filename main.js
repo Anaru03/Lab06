@@ -23,7 +23,7 @@ const swaggerOptions = {
         version: '1.0.0',
         description: 'API for managing blog posts',
       },
-      servers: [{ url: 'http://22428.arpanetos.lol:22428' }],
+      servers: [{ url: 'http://localhost:3000' }],
     },
     apis: ['./database/DataBase.js'],
   };
