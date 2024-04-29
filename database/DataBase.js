@@ -30,3 +30,13 @@ export async function insertImage(images_content) {
   const [result] = await conn.query('INSERT INTO Post_Content (images_content) VALUES (?)', [images_content]);
   return result;
 }
+
+export async function userCreat(user, password) {
+  const [result] = await conn.query('INSERT INTO User (user, password) VALUES (?, ?)', [user, password]);
+  return result;
+}
+
+export async function getUser(user) {
+  const [rows] = await conn.query('select * from User where user = ?', [user]);
+  return rows
+}

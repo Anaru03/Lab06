@@ -3,7 +3,9 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { getPosts, getPostId, createPost, updatePost, deletePost } from './database/DataBase.js'
+import { getPosts, getPostId, createPost, updatePost, deletePost, userCreat, getUser } from './database/DataBase.js'
+import { hashPassword, comparePassword } from './src/crypto.js'
+import {generateToken, tokeClientvalidate} from './src/jwt.js'
 import cors from 'cors'
 
 
@@ -31,6 +33,22 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
+const Endopointvalid = (req, res, next) => {
+    if (!['/posts', '/posts/:postId', '/users', '/user'].includes(req.path)) {
+        return res.status(404).json({ error: 'El endpoint no ha sido localizado, es inexistente' });
+    }
+    next();
+};
+
+const Structuretvalid = (req, res, next) => {
+    if(['PUT', 'POST'].includes(req.method) && !req.is('application/json')) {
+        return res.status(400).json({ error: 'El contenido del request no es JSON' });
+    }
+    next();
+};
+
+app.use(Structuretvalid);
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -50,7 +68,7 @@ app.get('/', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/posts', async (req, res, next) => {
+app.get('/posts', tokeClientvalidate, async (req, res, next) => {
     console.log(getPosts())
     try {
         const posts = await getPosts();
@@ -76,6 +94,7 @@ app.get('/posts/:postId', async (req, res, next) => {
 });
 
 app.post('/posts', async (req, res, next) => {
+    req.headers['content-type'] === 'application/json';
     try {
         const { ...post} = req.body; 
 
@@ -108,11 +127,52 @@ app.delete('/posts/:postId', async (req, res, next) => {
         if (deletedPost) {
             res.json({ message: 'Post deleted successfully' });
         } else {
-            res.status(404).json({ error: '404 Not Found'});
+            res.status(500).json({ error: 'Erro al eliminar el post según el id: ?' [postId] });
         }
     } catch (error) {
         next(error);
     }
+});
+
+
+app.post('/users', async (req, res) => {
+    const info = req.body;
+    const { user, password } = info;
+    const foundUser = await getUser(user);
+    if (foundUser) {
+        foundUser.map(({usuario, contra}) => {
+            if (comparePassword(password, contra)) {
+                const token = generateToken(usuario);
+                res.status(200).json({ token: token });
+            }else {
+                res.status(500).json({ error: 'Contraseña incorrecta' });
+            }
+        })
+    } else {
+        res.status(500).json({ error: 'Usuario no encontrado' });
+    }
+});
+
+
+app.post('/user', async (req, res) => {
+    req.headers['content-type'] === 'application/json';
+    const info = req.body;
+    const { user, password } = info;
+
+    const hashsPassword = hashPassword(password)
+
+    try{
+        await userCreat(user, hashsPassword);
+        res.status(200).json(info);
+    }catch (error) {
+        res.status(500).json({ error: 'Error no se pudo crear el usuario' });
+        console.log(error);
+    }
+})
+
+app.use(Endopointvalid);
+app.use((req, res) => {
+    res.status(501).json({ error: 'No se implementó el método HTTP' });
 });
 
 app.listen(PORT, () => {
