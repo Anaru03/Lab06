@@ -39,6 +39,7 @@ yarn.lock
 
 # Docker volumes files
 /docker-compose.yml
+
 /docker-compose.override.yml
 
 # MySQL data files
