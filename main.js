@@ -136,40 +136,31 @@ app.delete('/posts/:postId', async (req, res, next) => {
 
 
 app.post('/users', async (req, res) => {
-    const info = req.body;
-    const { user, password } = info;
-    const foundUser = await getUser(user);
-    if (foundUser) {
-        foundUser.map(({usuario, contra}) => {
-            if (comparePassword(password, contra)) {
-                const token = generateToken(usuario);
-                res.status(200).json({ token: token });
-            }else {
-                res.status(500).json({ error: 'Contraseña incorrecta' });
-            }
-        })
-    } else {
-        res.status(500).json({ error: 'Usuario no encontrado' });
-    }
-});
-
-
-
-app.post('/user', async (req, res) => {
     req.headers['content-type'] === 'application/json';
     const info = req.body;
-    const { usuario, contra } = info;
-
-    const hashsPassword = hashPassword(password)
-
-    try{
-        await userCreat(user, hashsPassword);
-        res.status(200).json(info);
-    }catch (error) {
-        res.status(500).json({ error: 'Error no se pudo crear el usuario' });
-        console.log(error);
+    const { user } = info;
+    const { password } = info;
+  
+    const userFound = await getUser(user);
+  
+    if(userFound){
+      res.status(500).json({ message: 'Usuario en existencia' });
+      return;
     }
-})
+  
+    const passwordHash = hashpassword(password);
+  
+    try {
+      await createUser(user, passwordHash);
+      res.status(200).json(info);
+    } catch (error) {
+      res.status(500).json({ message: 'Error, no se puede crear usuario' });
+      console.log(error);
+    }
+  })
+
+
+
 
 app.use(Endopointvalid);
 app.use((req, res) => {
