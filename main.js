@@ -68,7 +68,8 @@ app.get('/', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/posts', tokeClientvalidate, async (req, res, next) => {
+app.get('/posts'/*, tokeClientvalidate*/, async (req, res, next) => {
+    /*res.setHeader('Content-Type', 'application/json');*/
     console.log(getPosts())
     try {
         const posts = await getPosts();
@@ -94,7 +95,6 @@ app.get('/posts/:postId', async (req, res, next) => {
 });
 
 app.post('/posts', async (req, res, next) => {
-    req.headers['content-type'] === 'application/json';
     try {
         const { ...post} = req.body; 
 
@@ -154,10 +154,11 @@ app.post('/users', async (req, res) => {
 });
 
 
+
 app.post('/user', async (req, res) => {
     req.headers['content-type'] === 'application/json';
     const info = req.body;
-    const { user, password } = info;
+    const { usuario, contra } = info;
 
     const hashsPassword = hashPassword(password)
 
@@ -174,6 +175,7 @@ app.use(Endopointvalid);
 app.use((req, res) => {
     res.status(501).json({ error: 'No se implementó el método HTTP' });
 });
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://127.0.0.1:${PORT}`);
