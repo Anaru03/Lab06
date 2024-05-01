@@ -19,7 +19,7 @@ services:
     ports:
       - "3309:3306"
     volumes:
-      - ./schemas.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./database/schemas.sql:/docker-entrypoint-initdb.d/init-db.sql
 volumes:
     mysql-data:
         driver: "local"

@@ -138,20 +138,19 @@ app.delete('/posts/:postId', async (req, res, next) => {
 app.post('/users', async (req, res) => {
     req.headers['content-type'] === 'application/json';
     const info = req.body;
-    const { user } = info;
-    const { password } = info;
+    const { user, password } = info;
   
     const userFound = await getUser(user);
   
     if(userFound){
-      res.status(500).json({ message: 'Usuario en existencia' });
+      res.status(500).json({ message: 'Error: Usuario en existencia ' });
       return;
     }
   
-    const passwordHash = hashpassword(password);
+    const passwordHash = hashPassword(password);
   
     try {
-      await createUser(user, passwordHash);
+      await userCreat(user, passwordHash);
       res.status(200).json(info);
     } catch (error) {
       res.status(500).json({ message: 'Error, no se puede crear usuario' });
