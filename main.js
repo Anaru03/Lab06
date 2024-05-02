@@ -3,9 +3,11 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { getPosts, getPostId, createPost, updatePost, deletePost, userCreat, getUser } from './database/DataBase.js'
-import { hashPassword, comparePassword } from './src/crypto.js'
-import {generateToken, tokeClientvalidate} from './src/jwt.js'
+import { getPosts, getPostId, createPost, updatePost, deletePost} from './database/DataBase.js'
+import tokenauth from './src/validation/Tokenauth.js'
+import postContentValidation from './src/bodyRegister/controllers/postContentValidation.js'
+import errorValidation from './src/validation/errorValidation.js'
+import { registro, login } from './src/bodyRegister/controllers/controllerAuthentication.js';
 import cors from 'cors'
 
 
@@ -68,8 +70,7 @@ app.get('/', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/posts'/*, tokeClientvalidate*/, async (req, res, next) => {
-    /*res.setHeader('Content-Type', 'application/json');*/
+app.get('/posts', async (req, res, next) => {
     console.log(getPosts())
     try {
         const posts = await getPosts();
@@ -87,14 +88,14 @@ app.get('/posts/:postId', async (req, res, next) => {
         if (post) {
             res.json(post);
         } else {
-            res.status(404).json({ error: '404 Not Found' });
+            res.status(404).json({ error: 'ID no encontrado'});
         }
     } catch (error) {
         next(error);
     }
 });
 
-app.post('/posts', async (req, res, next) => {
+app.post('/posts', tokenauth, postContentValidation.PostNew, errorValidation,  async (req, res, next) => {
     try {
         const { ...post} = req.body; 
 
@@ -105,7 +106,7 @@ app.post('/posts', async (req, res, next) => {
     }
 });
 
-app.put('/posts/:postId', async (req, res, next) => {
+app.put('/posts/:postId', tokenauth, postContentValidation.PostUp, errorValidation, async (req, res, next) => {
     try {
         const postId = req.params.postId;
         const updatedPostData = req.body;
@@ -120,7 +121,7 @@ app.put('/posts/:postId', async (req, res, next) => {
     }
 });
 
-app.delete('/posts/:postId', async (req, res, next) => {
+app.delete('/posts/:postId', tokenauth, async (req, res, next) => {
     try {
         const postId = req.params.postId;
         const deletedPost = await deletePost(postId);
@@ -135,30 +136,8 @@ app.delete('/posts/:postId', async (req, res, next) => {
 });
 
 
-app.post('/users', async (req, res) => {
-    req.headers['content-type'] === 'application/json';
-    const info = req.body;
-    const { user, password } = info;
-  
-    const userFound = await getUser(user);
-  
-    if(userFound){
-      res.status(500).json({ message: 'Error: Usuario en existencia ' });
-      return;
-    }
-  
-    const passwordHash = hashPassword(password);
-  
-    try {
-      await userCreat(user, passwordHash);
-      res.status(200).json(info);
-    } catch (error) {
-      res.status(500).json({ message: 'Error, no se puede crear usuario' });
-      console.log(error);
-    }
-  })
-
-
+app.post('/registro', registro)
+app.post('/login', login)
 
 
 app.use(Endopointvalid);
