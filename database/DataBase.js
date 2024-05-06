@@ -31,13 +31,17 @@ export async function insertImage(images_content) {
   return result;
 }
 
-export async function userCreat(username, password) {
-  const [result] = await conn.query('INSERT INTO User (username, password) VALUES (?, ?)', [username, password]);
+const userCreate = async (username, password) => {
+  const [result] = await conn.query('INSERT INTO Usuarios (username, password) VALUES (?, ?)', [username, password],)
   return result;
 }
 
-export async function getUser(username) {
-  const [rows] = await conn.query('SELECT * FROM User WHERE username = ?', [username]);
-  return rows
+const getUser = async (username) => {
+  const [result] = await conn.query('SELECT * FROM Usuarios WHERE username = ?', [username]);
+  return result[0];
 }
 
+export default {
+  userCreate,
+  getUser
+}

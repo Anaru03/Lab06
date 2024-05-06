@@ -1,6 +1,6 @@
 import Authentication from '../services/serviceAuthentication.js'
 
-export const registro = async (req, res) => {
+const registro = async (req, res) => {
   try {
     await Authentication.registro(req.body.username, req.body.password)
     const response = {
@@ -12,7 +12,7 @@ export const registro = async (req, res) => {
   }
 }
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const tokenEnter = await Authentication.login(
       req.body.username,
@@ -30,3 +30,9 @@ export const login = async (req, res) => {
     res.status(400).send(err.message)
   }
 }
+
+export default {
+  registro,
+  login,
+}
+

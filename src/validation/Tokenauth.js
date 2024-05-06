@@ -13,7 +13,6 @@ export const generateToken = (user) => {
     }
 };
 
-// Middleware de autenticación de token (exportación predeterminada)
 const tokenAuth = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 

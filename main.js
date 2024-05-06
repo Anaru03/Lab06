@@ -3,11 +3,11 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { getPosts, getPostId, createPost, updatePost, deletePost} from './database/DataBase.js'
+import { getPosts, getPostId, createPost, updatePost, deletePost } from './database/DataBase.js'
 import tokenauth from './src/validation/Tokenauth.js'
 import postContentValidation from './src/bodyRegister/controllers/postContentValidation.js'
 import errorValidation from './src/validation/errorValidation.js'
-import { registro, login } from './src/bodyRegister/controllers/controllerAuthentication.js';
+import controllerAuth from './src/bodyRegister/controllers/controllerAuthentication.js';
 import cors from 'cors'
 
 
@@ -35,12 +35,14 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
+/**
 const Endopointvalid = (req, res, next) => {
     if (!['/posts', '/posts/:postId', '/users', '/user'].includes(req.path)) {
         return res.status(404).json({ error: 'El endpoint no ha sido localizado, es inexistente' });
     }
     next();
 };
+*/
 
 const Structuretvalid = (req, res, next) => {
     if(['PUT', 'POST'].includes(req.method) && !req.is('application/json')) {
@@ -136,15 +138,25 @@ app.delete('/posts/:postId', tokenauth, async (req, res, next) => {
 });
 
 
-app.post('/registro', registro)
-app.post('/login', login)
+app.post('/registro', controllerAuth.registro)
+app.post('/login', controllerAuth.login)
+
+/*
+app.get('/users', async (req, res, next) => {
+    try {
+        const usuarios = await getUser();
+        res.json(usuarios);
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 app.use(Endopointvalid);
 app.use((req, res) => {
     res.status(501).json({ error: 'No se implementó el método HTTP' });
 });
-
+*/
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://127.0.0.1:${PORT}`);
