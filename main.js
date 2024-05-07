@@ -3,7 +3,8 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { getPosts, getPostId, createPost, updatePost, deletePost } from './database/DataBase.js'
+
+import db from './database/DataBase.js'
 import tokenauth from './src/validation/Tokenauth.js'
 import postContentValidation from './src/bodyRegister/controllers/postContentValidation.js'
 import errorValidation from './src/validation/errorValidation.js'
@@ -73,9 +74,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/posts', async (req, res, next) => {
-    console.log(getPosts())
+    console.log(db.getPosts())
     try {
-        const posts = await getPosts();
+        const posts = await db.getPostId();
         res.json(posts);
     } catch (error) {
         next(error); 
@@ -86,7 +87,7 @@ app.get('/posts', async (req, res, next) => {
 app.get('/posts/:postId', async (req, res, next) => {
     try {
         const postId = req.params.postId;
-        const post = await getPostId(postId);
+        const post = await db.getPostId(postId);
         if (post) {
             res.json(post);
         } else {
@@ -101,7 +102,7 @@ app.post('/posts', tokenauth, postContentValidation.PostNew, errorValidation,  a
     try {
         const { ...post} = req.body; 
 
-        const createPostResult = await createPost(post.title, post.content, post.images_content, post.author_name); 
+        const createPostResult = await db.createPost(post.title, post.content, post.images_content, post.author_name); 
         res.status(201).json(createPostResult);
     } catch (error) {
         next(error);
@@ -112,7 +113,7 @@ app.put('/posts/:postId', tokenauth, postContentValidation.PostUp, errorValidati
     try {
         const postId = req.params.postId;
         const updatedPostData = req.body;
-        const updatedPost = await updatePost(postId, updatedPostData);
+        const updatedPost = await db.pdatePost(postId, updatedPostData);
         if (updatedPost) {
             res.json(updatedPost);
         } else {
@@ -126,7 +127,7 @@ app.put('/posts/:postId', tokenauth, postContentValidation.PostUp, errorValidati
 app.delete('/posts/:postId', tokenauth, async (req, res, next) => {
     try {
         const postId = req.params.postId;
-        const deletedPost = await deletePost(postId);
+        const deletedPost = await db.deletePost(postId);
         if (deletedPost) {
             res.json({ message: 'Post deleted successfully' });
         } else {

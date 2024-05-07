@@ -14,11 +14,11 @@ async function login(username, password) {
   if (userlogin && (await bcrypt.compare(password, userlogin.password))) {
     const tokenEnter = jwt.sign(
       { id: userlogin.id },
-      process.env.JWT_HASH_SECRET,
+      process.env.JWT_HASH_SECRET
     );
     return tokenEnter;
   }
-  throw new Error('Error: Login invalido');
+  throw new Error('Error: Login inválido');
 }
 
 export default { registro, login };
